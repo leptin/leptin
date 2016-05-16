@@ -3,9 +3,6 @@ server {
     root /var/www/html;
 
     include https;
-    ssl_certificate /etc/nginx/ssl/server.crt;
-    ssl_certificate_key /etc/nginx/ssl/server.key;
-
     include php;
 }
 
