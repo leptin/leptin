@@ -1,0 +1,1 @@
+cp /keys/* /etc/nginx/ssl

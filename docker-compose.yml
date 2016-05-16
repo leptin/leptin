@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  setup:
+    build: setup
+    volumes:
+      - ./.ssl:/etc/nginx/ssl
+  nginx:
+    restart: always
+    #read_only: true
+    image: nginx:alpine
+    depends_on:
+      - setup
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/config.d:/etc/nginx/conf.d:ro
+      - ./nginx/php:/etc/nginx/php:ro
+      - ./nginx/https:/etc/nginx/https:ro
+      - ./.ssl:/etc/nginx/ssl:ro
+      - ./www:/var/www/html:ro
+  php-fpm:
+    restart: always
+    #read_only: true
+    image: php:fpm-alpine
+    volumes:
+      - ./php/conf.d:/usr/local/etc/php/conf.d:ro
+      - ./www:/var/www/html:ro
