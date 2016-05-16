@@ -19,6 +19,7 @@ services:
       - ./nginx/php:/etc/nginx/php:ro
       - ./nginx/https:/etc/nginx/https:ro
       - ./.ssl:/etc/nginx/ssl:ro
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled:ro
       - ./www:/var/www/html:ro
   php-fpm:
     restart: always
