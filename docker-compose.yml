@@ -4,27 +4,31 @@ services:
   setup:
     build: setup
     volumes:
-      - ./.ssl:/etc/nginx/ssl
+      - ./.ssh:/ssh
+      - ./.tls:/tls
   nginx:
     restart: always
     #read_only: true
     image: nginx:alpine
+    command: /nginx/run-nginx
     depends_on:
       - setup
+    environment:
+      - DOCKER_SERVER_CONFIG_REPOS
+      - DOCKER_SERVER_WEB_REPOS
     ports:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx/config.d:/etc/nginx/conf.d:ro
-      - ./nginx/php:/etc/nginx/php:ro
-      - ./nginx/https:/etc/nginx/https:ro
-      - ./.ssl:/etc/nginx/ssl:ro
-      - ./nginx/sites-enabled:/etc/nginx/sites-enabled:ro
-      - ./www:/var/www/html:ro
+      - ./.ssh:/ssh:ro
+      - ./www:/www:ro
+      - ./nginx:/nginx:ro
+      - ./.tls:/etc/nginx/tls:ro
+      - ./.www:/var/www/html
   php-fpm:
     restart: always
     #read_only: true
     image: php:fpm-alpine
     volumes:
       - ./php/conf.d:/usr/local/etc/php/conf.d:ro
-      - ./www:/var/www/html:ro
+      - ./.www:/var/www/html:ro

@@ -1,0 +1,20 @@
+#!/bin/sh -e
+# set -x
+
+SETUP_SSH_KEY_COPY=/ssh/id_rsa
+SERVER_KEY_PATH=/etc/nginx/tls/server.key
+
+echo "Waiting to begin nginx setup..."
+for i in `seq 1 30`
+do
+    if [ -f "$SETUP_SSH_KEY_COPY" ] && [ -f "$SERVER_KEY_PATH" ] ; then
+    	echo "Setting up nginx..."
+    	/nginx/setup-nginx
+    	echo "Starting nginx..."
+    	nginx -g 'daemon off;'
+	fi
+    sleep 1
+done
+
+>&2 echo "Error! Setup did not complete successfully!"
+exit 1
