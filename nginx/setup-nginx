@@ -1,6 +1,11 @@
 #!/bin/sh -e
 # set -x
 
+mkdir -p ~/.ssh
+cp -r /ssh/* ~/.ssh
+KNOWN_HOSTS=~/.ssh/known_hosts
+rm -f $KNOWN_HOSTS
+
 latest_repo_to_local() {
 	REMOTE_REPO_PATH=$1
     LOCAL_REPO_PATH=$2
@@ -12,7 +17,6 @@ latest_repo_to_local() {
 }
 
 get_repo() {
-    echo "checkout $1 to $2..."
     REMOTE_REPO_PATH=$1
     LOCAL_REPO_PATH=$2
 	case "$REMOTE_REPO_PATH" in
@@ -36,18 +40,11 @@ get_repo() {
 
 apk add --no-cache git openssh
 
-mkdir -p ~/.ssh
-cp -r /ssh/* ~/.ssh
-KNOWN_HOSTS=~/.ssh/known_hosts
-rm -f $KNOWN_HOSTS
-
-WEB_ROOT=/var/www/html
-
 DEFAULT_SERVER_WEB_REPOS="https://github.com/okwolf/php-hello-world.git"
 for REMOTE_REPO_PATH in "${DOCKER_SERVER_WEB_REPOS:=$DEFAULT_SERVER_WEB_REPOS}"
 do
 	REMOTE_REPO_NAME=$(basename "$REMOTE_REPO_PATH" .git)
-	LOCAL_REPO_PATH="$WEB_ROOT/$REMOTE_REPO_NAME"
+	LOCAL_REPO_PATH="/var/www/html/$REMOTE_REPO_NAME"
 	get_repo $REMOTE_REPO_PATH $LOCAL_REPO_PATH
 done
 
