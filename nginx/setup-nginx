@@ -57,5 +57,5 @@ do
 	REMOTE_REPO_NAME=$(basename "$REMOTE_REPO_PATH" .git)
 	LOCAL_REPO_PATH="/config/nginx/$REMOTE_REPO_NAME"
 	get_repo $REMOTE_REPO_PATH $LOCAL_REPO_PATH
-	cp -rfv $LOCAL_REPO_PATH/* /etc/nginx
+	cp -rf $LOCAL_REPO_PATH/* /etc/nginx
 done
