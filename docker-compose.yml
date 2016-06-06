@@ -21,7 +21,6 @@ services:
       - 443:443
     volumes:
       - ./.ssh:/ssh:ro
-      - ./www:/www:ro
       - ./nginx:/nginx:ro
       - ./.tls:/etc/nginx/tls:ro
       - ./.www:/var/www/html
