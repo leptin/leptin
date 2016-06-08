@@ -48,6 +48,7 @@ do
 	get_repo $REMOTE_REPO_PATH $LOCAL_REPO_PATH
 done
 
+cp -rf /tls /etc/nginx
 cp -rf /nginx /etc
 
 DEFAULT_SERVER_CONFIG_REPOS="https://github.com/okwolf/php-hello-world-config.git"

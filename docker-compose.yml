@@ -20,9 +20,9 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./.ssh:/ssh:ro
       - ./nginx:/nginx:ro
-      - ./.tls:/etc/nginx/tls:ro
+      - ./.ssh:/ssh:ro
+      - ./.tls:/tls:ro
       - ./.www:/var/www/html
   php-fpm:
     restart: always

@@ -2,12 +2,12 @@
 # set -x
 
 SETUP_SSH_KEY_COPY=/ssh/id_rsa
-SERVER_KEY_PATH=/etc/nginx/tls/server.key
+SETUP_SERVER_KEY_COPY=/tls/server.key
 
 echo "Waiting to begin nginx setup..."
 for i in `seq 1 30`
 do
-    if [ -f "$SETUP_SSH_KEY_COPY" ] && [ -f "$SERVER_KEY_PATH" ] ; then
+    if [ -f "$SETUP_SSH_KEY_COPY" ] && [ -f "$SETUP_SERVER_KEY_COPY" ] ; then
     	echo "Setting up nginx..."
     	/nginx/setup-nginx
     	echo "Starting nginx..."
