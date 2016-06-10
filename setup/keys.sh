@@ -12,4 +12,4 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 SSH_KEY_PATH=~/.ssh/id_rsa
 [ -f "$SSH_KEY_PATH" ] || ssh-keygen -t rsa -N "" -f $SSH_KEY_PATH
 SSH_PUBLIC_KEY=$(cat "$SSH_KEY_PATH.pub")
->&2 echo "Please add this public key to all required repos you haven't already: $SSH_PUBLIC_KEY"
+>&2 echo "Please add this deploy key to all required repos you haven't already: $SSH_PUBLIC_KEY"

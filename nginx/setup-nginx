@@ -28,7 +28,7 @@ get_repo() {
 				latest_repo_to_local $REMOTE_REPO_PATH $LOCAL_REPO_PATH
 			else
 				SSH_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
-				>&2 echo "Error! Please add the following key to $REMOTE_REPO_DOMAIN: $SSH_PUBLIC_KEY"
+				>&2 echo "Error! Please add the following deploy key to $REMOTE_REPO_PATH: $SSH_PUBLIC_KEY"
 				exit 1
 			fi
 		;;
