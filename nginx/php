@@ -1,6 +1,6 @@
 location ~ \.php$ {
-    include fastcgi_params;
-    fastcgi_pass php-fpm:9000;
-    fastcgi_split_path_info ^(.+\.php)(/.*)$;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  include fastcgi_params;
+  fastcgi_pass php-fpm:9000;
+  fastcgi_split_path_info ^(.+\.php)(/.*)$;
+  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 }

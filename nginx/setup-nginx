@@ -7,35 +7,35 @@ KNOWN_HOSTS=~/.ssh/known_hosts
 rm -f $KNOWN_HOSTS
 
 latest_repo_to_local() {
-	REMOTE_REPO_PATH=$1
+  REMOTE_REPO_PATH=$1
     LOCAL_REPO_PATH=$2
-	if [ -d "$LOCAL_REPO_PATH" ] ; then
-		cd $LOCAL_REPO_PATH && git pull
-	else
-		git clone --progress --depth 1 $REMOTE_REPO_PATH $LOCAL_REPO_PATH
-	fi
+  if [ -d "$LOCAL_REPO_PATH" ] ; then
+    cd $LOCAL_REPO_PATH && git pull
+  else
+    git clone --progress --depth 1 $REMOTE_REPO_PATH $LOCAL_REPO_PATH
+  fi
 }
 
 get_repo() {
-    REMOTE_REPO_PATH=$1
-    LOCAL_REPO_PATH=$2
-	case "$REMOTE_REPO_PATH" in
-	    git*)
-			REMOTE_REPO_SSH=$(echo "$REMOTE_REPO_PATH" | cut -d ":" -f 1)
-			REMOTE_REPO_DOMAIN=$(echo "$REMOTE_REPO_SSH" | cut -d "@" -f 2)
-			ssh-keyscan -H $REMOTE_REPO_DOMAIN > $KNOWN_HOSTS
-			if ssh -T $REMOTE_REPO_SSH ; then
-				latest_repo_to_local $REMOTE_REPO_PATH $LOCAL_REPO_PATH
-			else
-				SSH_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
-				>&2 echo "Error! Please add the following deploy key to $REMOTE_REPO_PATH: $SSH_PUBLIC_KEY"
-				exit 1
-			fi
-		;;
-	    *)
-			latest_repo_to_local $REMOTE_REPO_PATH $LOCAL_REPO_PATH
-		;;
-	esac
+  REMOTE_REPO_PATH=$1
+  LOCAL_REPO_PATH=$2
+  case "$REMOTE_REPO_PATH" in
+    git*)
+      REMOTE_REPO_SSH=$(echo "$REMOTE_REPO_PATH" | cut -d ":" -f 1)
+      REMOTE_REPO_DOMAIN=$(echo "$REMOTE_REPO_SSH" | cut -d "@" -f 2)
+      ssh-keyscan -H $REMOTE_REPO_DOMAIN > $KNOWN_HOSTS
+      if ssh -T $REMOTE_REPO_SSH ; then
+        latest_repo_to_local $REMOTE_REPO_PATH $LOCAL_REPO_PATH
+      else
+        SSH_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
+        >&2 echo "Error! Please add the following deploy key to $REMOTE_REPO_PATH: $SSH_PUBLIC_KEY"
+        exit 1
+      fi
+      ;;
+    *)
+      latest_repo_to_local $REMOTE_REPO_PATH $LOCAL_REPO_PATH
+      ;;
+  esac
 }
 
 apk add --no-cache git openssh
@@ -43,9 +43,9 @@ apk add --no-cache git openssh
 DEFAULT_SERVER_WEB_REPOS="https://github.com/okwolf/php-hello-world.git"
 for REMOTE_REPO_PATH in "${DOCKER_SERVER_WEB_REPOS:=$DEFAULT_SERVER_WEB_REPOS}"
 do
-	REMOTE_REPO_NAME=$(basename "$REMOTE_REPO_PATH" .git)
-	LOCAL_REPO_PATH="/var/www/html/$REMOTE_REPO_NAME"
-	get_repo $REMOTE_REPO_PATH $LOCAL_REPO_PATH
+  REMOTE_REPO_NAME=$(basename "$REMOTE_REPO_PATH" .git)
+  LOCAL_REPO_PATH="/var/www/html/$REMOTE_REPO_NAME"
+  get_repo $REMOTE_REPO_PATH $LOCAL_REPO_PATH
 done
 
 cp -rf /tls /etc/nginx
@@ -55,8 +55,8 @@ DEFAULT_SERVER_CONFIG_REPOS="https://github.com/okwolf/php-hello-world-config.gi
 mkdir -p /config/nginx
 for REMOTE_REPO_PATH in "${DOCKER_SERVER_CONFIG_REPOS:=$DEFAULT_SERVER_CONFIG_REPOS}"
 do
-	REMOTE_REPO_NAME=$(basename "$REMOTE_REPO_PATH" .git)
-	LOCAL_REPO_PATH="/config/nginx/$REMOTE_REPO_NAME"
-	get_repo $REMOTE_REPO_PATH $LOCAL_REPO_PATH
-	cp -rf $LOCAL_REPO_PATH/* /etc/nginx
+  REMOTE_REPO_NAME=$(basename "$REMOTE_REPO_PATH" .git)
+  LOCAL_REPO_PATH="/config/nginx/$REMOTE_REPO_NAME"
+  get_repo $REMOTE_REPO_PATH $LOCAL_REPO_PATH
+  cp -rf $LOCAL_REPO_PATH/* /etc/nginx
 done
