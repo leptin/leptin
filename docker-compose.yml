@@ -9,8 +9,7 @@ services:
   nginx:
     restart: always
     #read_only: true
-    image: nginx:alpine
-    command: /nginx/run-nginx
+    build: nginx
     depends_on:
       - setup
     environment:
@@ -20,7 +19,6 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx:/nginx:ro
       - ./.ssh:/ssh:ro
       - ./.tls:/tls:ro
       - ./.www:/var/www/html

@@ -41,8 +41,6 @@ get_repo() {
   esac
 }
 
-apk add --no-cache git openssh
-
 DEFAULT_SERVER_WEB_REPOS="https://github.com/okwolf/php-hello-world.git"
 for REMOTE_REPO_PATH in "${DOCKER_SERVER_WEB_REPOS:=$DEFAULT_SERVER_WEB_REPOS}"
 do
