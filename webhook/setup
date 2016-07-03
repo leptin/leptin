@@ -1,0 +1,10 @@
+#!/bin/sh -e
+# set -x
+
+DEFAULT_SERVER_WEB_REPOS="https://github.com/okwolf/php-hello-world.git"
+for REMOTE_REPO_PATH in "${DOCKER_SERVER_WEB_REPOS:=$DEFAULT_SERVER_WEB_REPOS}"
+do
+  REMOTE_REPO_NAME=$(basename "$REMOTE_REPO_PATH" .git)
+  LOCAL_REPO_PATH="/var/www/html/$REMOTE_REPO_NAME"
+  /common-scripts/get-repo $REMOTE_REPO_PATH $LOCAL_REPO_PATH
+done

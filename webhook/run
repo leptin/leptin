@@ -1,0 +1,19 @@
+#!/bin/sh -e
+# set -x
+
+SETUP_SSH_KEY_COPY=/ssh/id_rsa
+
+echo "Waiting to begin nginx setup..."
+for i in `seq 1 30`
+do
+  if [ -f "$SETUP_SSH_KEY_COPY" ] ; then
+    echo "Setting up webhook..."
+    /etc/webhook/setup
+    echo "Starting webhook..."
+    webhook -verbose -hooks=/etc/webhook/hooks.json -port=9090
+  fi
+  sleep 1
+done
+
+>&2 echo "Error! Webhook did not start successfully!"
+exit 1

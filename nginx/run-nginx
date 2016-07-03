@@ -16,5 +16,5 @@ do
   sleep 1
 done
 
->&2 echo "Error! Setup did not complete successfully!"
+>&2 echo "Error! Nginx did not start successfully!"
 exit 1

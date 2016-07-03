@@ -6,25 +6,32 @@ services:
     volumes:
       - ./.ssh:/ssh
       - ./.tls:/tls
-  nginx:
+  webhook:
     restart: always
-    #read_only: true
-    build: nginx
+    build: webhook
     depends_on:
       - setup
     environment:
-      - DOCKER_SERVER_CONFIG_REPOS
       - DOCKER_SERVER_WEB_REPOS
+    volumes:
+      - ./common-scripts:/common-scripts:ro
+      - ./.ssh:/ssh:ro
+      - ./.www:/var/www/html
+  nginx:
+    restart: always
+    build: nginx
+    environment:
+      - DOCKER_SERVER_CONFIG_REPOS
     ports:
       - 80:80
       - 443:443
     volumes:
+      - ./common-scripts:/common-scripts:ro
       - ./.ssh:/ssh:ro
       - ./.tls:/tls:ro
-      - ./.www:/var/www/html
+      - ./.www:/var/www/html:ro
   php-fpm:
     restart: always
-    #read_only: true
     image: php:fpm-alpine
     volumes:
       - ./php/conf.d:/usr/local/etc/php/conf.d:ro

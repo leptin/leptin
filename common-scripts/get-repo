@@ -1,0 +1,27 @@
+#!/bin/sh -e
+# set -x
+
+mkdir -p ~/.ssh
+cp -r /ssh/* ~/.ssh
+KNOWN_HOSTS=~/.ssh/known_hosts
+rm -f $KNOWN_HOSTS
+
+REMOTE_REPO_PATH=$1
+LOCAL_REPO_PATH=$2
+case "$REMOTE_REPO_PATH" in
+  git*)
+    REMOTE_REPO_SSH=$(echo "$REMOTE_REPO_PATH" | cut -d ":" -f 1)
+    REMOTE_REPO_DOMAIN=$(echo "$REMOTE_REPO_SSH" | cut -d "@" -f 2)
+    ssh-keyscan -H $REMOTE_REPO_DOMAIN > $KNOWN_HOSTS
+    if ssh -T $REMOTE_REPO_SSH ; then
+      /common-scripts/latest-repo-from-remote $LOCAL_REPO_PATH $REMOTE_REPO_PATH
+    else
+      SSH_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
+      >&2 echo "Error! Please add the following deploy key to $REMOTE_REPO_PATH: $SSH_PUBLIC_KEY"
+      exit 1
+    fi
+    ;;
+  *)
+    /common-scripts/latest-repo-from-remote $LOCAL_REPO_PATH $REMOTE_REPO_PATH
+    ;;
+esac

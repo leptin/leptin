@@ -1,0 +1,4 @@
+#!/bin/sh -e
+# set -x
+
+/common-scripts/latest-repo-from-remote /var/www/html/$1

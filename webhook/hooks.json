@@ -1,0 +1,14 @@
+[
+  {
+    "id": "deploy",
+    "execute-command": "/etc/webhook/deploy",
+    "command-working-directory": "/etc/webhook/",
+    "pass-arguments-to-command":
+    [
+      {
+        "source": "payload",
+        "name": "repository.name"
+      }
+    ]
+  }
+]

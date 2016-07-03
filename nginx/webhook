@@ -1,0 +1,4 @@
+location /hooks {
+  limit_req zone=every-five-seconds burst=1 nodelay;
+  proxy_pass http://webhook:9090/hooks;
+}

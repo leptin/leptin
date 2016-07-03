@@ -1,0 +1,14 @@
+#!/bin/sh -e
+# set -x
+
+LOCAL_REPO_PATH=$1
+REMOTE_REPO_PATH=$2
+
+if [ -d "$LOCAL_REPO_PATH" ] ; then
+  cd $LOCAL_REPO_PATH
+  git reset --hard
+  git clean -fd
+  git pull
+else
+  git clone --progress --depth 1 $REMOTE_REPO_PATH $LOCAL_REPO_PATH
+fi
